@@ -3,6 +3,7 @@ import { Button, Container } from 'react-bootstrap';
 import logo from './assets/logosimpson.png'
 import Frase from './components/Frase.jsx'
 import { useEffect, useState } from 'react';
+import { Commet } from 'react-loading-indicators';
 function App() {
     const [personaje, setPersonaje] = useState({})
     useEffect(()=>{
@@ -21,6 +22,7 @@ function App() {
     <>
       <Container className='text-center my-4'>
         <img src={logo} alt="Logo de los simpsons" className='w-75' />
+        <Commet color="#32cd32" size="medium" text="" textColor="" />
         <Frase personaje={personaje}></Frase>
         <Button variant='warning' className='mt-3' onClick={consultarAPI}>Obtener Frase</Button>
       </Container>
