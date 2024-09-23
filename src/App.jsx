@@ -6,24 +6,43 @@ import { useEffect, useState } from 'react';
 import { Commet } from 'react-loading-indicators';
 function App() {
     const [personaje, setPersonaje] = useState({})
+    const [mostrarLoading, setMostrarLoading] = useState(true)
     useEffect(()=>{
       consultarAPI();
     }, [])
 
     const consultarAPI = async()=>{
-      //FetchAPI
-      //solicitud GET (POST,PUT O PATCH, DELETE)
-      const respuesta = await fetch('https://thesimpsonsquoteapi.glitch.me/quotes')
-      const datos = await respuesta.json()
-      console.log(datos[0])
-      setPersonaje(datos[0])
+      try {
+        setMostrarLoading(true)
+        //FetchAPI
+        //solicitud GET (POST,PUT O PATCH, DELETE)
+        const respuesta = await fetch('https://thesimpsonsquoteapi.glitch.me/quotes')
+        const datos = await respuesta.json()
+        console.log(datos[0])
+        setPersonaje(datos[0])
+        setMostrarLoading(false)
+      } catch (error) {
+        console.error(error)
+        alert('Error al cargar')
+     
+      } finally {
+        setMostrarLoading(false)
+      }
+
     }
   return (
     <>
       <Container className='text-center my-4'>
         <img src={logo} alt="Logo de los simpsons" className='w-75' />
-        <Commet color="#32cd32" size="medium" text="" textColor="" />
-        <Frase personaje={personaje}></Frase>
+        {
+          (mostrarLoading === true)?( 
+          <div>
+            <Commet color="#000000" size="medium" text="" textColor="" />
+          </div>
+          ):(
+              <Frase personaje={personaje}></Frase>
+            )
+        }
         <Button variant='warning' className='mt-3' onClick={consultarAPI}>Obtener Frase</Button>
       </Container>
     </>
